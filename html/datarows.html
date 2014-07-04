@@ -1,0 +1,14 @@
+<div class="datarows design-{{design.id}}">
+	<div class="center loading" ng-if="loading">
+		<i class="fa fa-spin fa-spinner"></i>
+		<p>Loading...</p>
+	</div>
+	<div ng-if="!loading">
+		<div class="clearfix">
+			<img ng-src="/img/owls/{{design.image}}.png" class="pull-{{design.image_position}} heading">
+			<h2 style="margin-top: 0">{{title}}</h2>
+			<p>powered with realtime data from <a href="https://import.io" target="_blank">import.io</a></p>
+		</div>
+		<datarow ng-repeat="row in data"></datarow>
+	</div>
+</div>

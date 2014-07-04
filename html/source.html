@@ -1,0 +1,41 @@
+<div class="wrapper">
+	<div class="clearfix">
+		<img src="/img/owls/smart.png" class="pull-right" style="height: 120px">
+		<h1>Pick a data source</h1>
+		<p>Next we need to pick a <span class="orange">data source</span> to use in your widget.</p>
+		<p>We've grabbed a list of your data sources you can use below.</p>
+	</div>
+	<div class="search" ng-if="!loading" style="margin-bottom: 20px;">
+		<form ng-submit="executeSearch(searchterm)" class="form-inline">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="searchterm" placeholder="Search sources">
+				<button type="submit" class="btn btn-success" ng-disabled="!searchterm.length"><i class="fa fa-search"></i> Search</button>
+				<button class="btn btn-danger" ng-if="searchterm.length" ng-click="executeSearch('')"><i class="fa fa-trash-o"></i></button>
+			</div>
+		</form>
+	</div>
+	<div class="loading center" ng-if="loading">
+		<i class="fa fa-spin fa-spinner"></i>
+		<p>Owls are flying off to get your sources...</p>
+	</div>
+	<div ng-if="!loading && !data.length" class="center">
+		<h2 class="red">Oops!</h2>
+		<p>You don't have any eligible data sources at the moment or your search didn't match anything!</p>
+		<p><a href="https://import.io" target="_blank">Better get building</a></p>
+	</div>
+	<div ng-if="!loading && data.length" class="results">
+		<div class="result clearfix" ng-repeat="row in data">
+			<i class="fa fa-{{getIcon(row.type)}} pull-left orange"></i>
+			{{row.name}}
+			<button class="btn btn-warning pull-right" ng-click="chooseSource(row)">Pick me!</button>
+		</div>
+	</div>
+	<div ng-if="!loading && data.length" class="clearfix">
+		<button class="btn btn-default pull-left" ng-click="previousPage()" ng-show="page > 1">
+			<i class="fa fa-chevron-left grey"></i> Previous
+		</button>
+		<button class="btn btn-default pull-right" ng-click="nextPage()" ng-show="page < (total/ipp)">
+			Next <i class="fa fa-chevron-right grey"></i>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,55 @@
+body {
+	font-family: "PT Sans", sans-serif;
+}
+
+/* Utils */
+
+.center {
+  text-align: center;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.pink {
+  color: #ec3e82;
+}
+
+.yellow {
+  color: #fcb236;
+}
+
+.orange {
+  color: #ec6400;
+}
+
+.red {
+  color: #ec1f00;
+}
+
+.cream {
+  color: #f2eee2;
+}
+
+.blue {
+  color: #4caee2;
+}
+
+.green {
+  color: #10c77e;
+}
+
+.grey {
+  color: #6d6c68;
+}
+
+/* Loading */
+
+.loading i.fa-spin {
+  font-size: 96px;
+}
+
+.loading p {
+  font-size: 28px;
+}

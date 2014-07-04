@@ -1,0 +1,52 @@
+<div class="wrapper" ng-if="mode == 'login'">
+	<div class="clearfix">
+		<img src="/img/owls/pointy.png" class="pull-right" style="height: 120px">
+		<h1>Hi there!</h1>
+		<p>Use this tool to build an <span class="green">embeddable widget</span> for your import.io data source.</p>
+		<p>We're going to need your <span class="green">import.io credentials</span> to kick this all off:</p>
+	</div>
+	<form class="form-horizontal" ng-submit="submitForm(user_guid, api_key, remember)">
+		<div class="form-group">
+			<label for="user_guid" class="control-label col-sm-2">User GUID:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" ng-model="user_guid" placeholder="Your User GUID">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="api_key" class="control-label col-sm-2">API key:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" ng-model="api_key" placeholder="Your API key">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="remember"> Remember me for today
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				Get these details from <a href="https://import.io/data/account" target="_blank">your Account page</a>.
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-success btn-lg" ng-disabled="!user_guid.length || !api_key.length">Step 2 <i class="fa fa-chevron-right"></i></button>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="wrapper center loading" ng-if="mode == 'loading'">
+	<i class="fa fa-spin fa-spinner"></i>
+	<p>Checking your credentials...</p>
+</div>
+<div class="wrapper" ng-if="mode == 'error'">
+	<img class="pull-left" src="/img/owls/needy.png" style="height: 140px; margin-right: 20px; margin-left: -20px;">
+	<h1 class="red">Oopsey!</h1>
+	<p>We tried to use those credentials, but they don't look like they will work.</p>
+	<p>Would you mind trying again?</p>
+	<button class="btn btn-danger" ng-click="reset()">Try again <i class="fa fa-chevron-right"></i></button>
+</div>

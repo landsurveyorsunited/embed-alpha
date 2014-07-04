@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="Embed" lang="en">
+	<head>
+		<title>import.io data embed</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+		<link href="/css/bootstrap.css" rel="stylesheet">
+		<link href="/css/utils.css" rel="stylesheet">
+		<link href="/css/datarow.css" rel="stylesheet">
+
+		<base href="/">
+
+	</head>
+	<body>
+		<div class="container" ng-controller="EmbedController">
+			<datarows></datarows>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+		<script src="https://cdn.import.io/js/2.0.0/importio.js"></script>
+		
+		<script src="/js/embed.js"></script>
+
+		<script src="/js/controllers/embed.js"></script>
+
+		<script src="/js/directives/datarow.js"></script>
+		<script src="/js/directives/datarows.js"></script>
+
+		<script src="/js/services/safeApply.js"></script>
+		<script src="/js/services/data.js"></script>
+	</body>
+</html>

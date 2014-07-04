@@ -1,0 +1,97 @@
+.container {
+	width: 100%;
+}
+
+.datarows {
+	padding: 20px 20px 5px;
+}
+
+.datarows img.heading {
+	height: 80px;
+	margin-bottom: 20px;
+}
+
+.datarows img.heading.pull-left {
+	margin-right: 20px;
+}
+
+.datarows img.heading.pull-right {
+	margin-left: 20px;
+}
+
+.datarows .datarow {
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	margin-bottom: 15px;
+	padding: 10px 10px 0;
+}
+
+.datarows .datarow h1 {
+	font-size: 30px;
+	margin-top: 0;
+}
+
+.datarows .datarow .img {
+	margin: -10px 10px 0 -10px;
+	width: 120px;
+	height: 120px;
+	background-size: cover;
+	background-position: center center;
+}
+
+.datarows .datarow.has-img > h1,
+.datarows .datarow.has-img > div.p {
+	margin-left: 120px;
+}
+
+.datarows .datarow div.p {
+	font-size: 24px;
+}
+
+.datarows .datarow em {
+	font-size: 18px;
+}
+
+.datarows .datarow div.p a {
+	width: 100%;
+	text-align: right;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: block;
+	font-size: 18px;
+	padding-right: 20px;
+	margin-bottom: 10px;
+}
+
+.datarows .datarow div.p a i.fa {
+	position: absolute;
+	right: 0;
+	top: 5px;
+}
+
+.hoverable {
+  position: relative;
+}
+
+.on-hover {
+	display: none;
+}
+
+/* Themes */
+
+.datarows.design-needy a {
+	color: #4caee2;
+}
+
+.datarows.design-pointy a {
+	color: #10c77e;
+}
+
+.datarows.design-smart a {
+	color: #fcb236;
+}
+
+.datarows.design-tall a {
+	color: #CC7552;
+}
