@@ -276,4 +276,22 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		return '<iframe src="' + url + '" style="width:100%;height:' + $scope.height + 'px;border:1px solid #ccc;"></iframe>';
 	}
 
+	$scope.d = function(field, supplementary, i) {
+		var prefix = $scope.mappings[field].list[i];
+		if (supplementary === true) {
+			var attempts = ["text", "title"];
+			for (var i = 0; i < attempts.length; i++) {
+				var attempt = attempts[i];
+				if ($scope.row.hasOwnProperty(prefix + "/_" + attempt)) {
+					supplementary = attempt;
+					break;
+				}
+			}
+			if (supplementary === true) {
+				supplementary = false;
+			}
+		}
+		return $scope.row[prefix + (supplementary ? '/_' + supplementary : '')];
+	}
+
 });

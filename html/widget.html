@@ -31,6 +31,15 @@
 				<button class="btn btn-danger" ng-click="firstSuggestion()"><i class="fa fa-undo"></i> Gah! Undo!</button>
 			</div>
 		</div>
+		<div style="width: 50%; margin: 20px auto" ng-if="!loading && guide == 'data' && getCurrentMapping().list.length > 1">
+			<h4>Or, pick one of these:</h4>
+			<ul class="list-unstyled outputs">
+				<li ng-repeat="output in getCurrentMapping().list" class="clearfix" style="padding: 5px">
+					{{d(getCurrentMappingKey(), true, $index)}} ({{output}})
+					<a class="btn btn-warning btn-sm pull-right" ng-click="getCurrentMapping().current = $index">Try me!</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<div class="well clearfix" ng-if="guide == 'amount'">
 		<h3 class="center"><span class="pink">How much</span> data would you like displayed?</h3>
