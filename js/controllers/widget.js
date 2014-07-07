@@ -174,6 +174,8 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 					break;
 				case "URL":
 					fields.push("link");
+					fields.push("heading");
+					fields.push("description");
 					break;
 				case "IMAGE":
 					fields.push("image");

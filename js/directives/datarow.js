@@ -5,7 +5,21 @@ angular.module("Embed").directive("datarow", function () {
 		"controller": function($scope, safeApply) {
 
 			$scope.d = function(field, supplementary) {
-				return $scope.row[$scope.mappings[field].list[$scope.mappings[field].current] + (supplementary ? '/_' + supplementary : '')];
+				var prefix = $scope.mappings[field].list[$scope.mappings[field].current];
+				if (supplementary === true) {
+					var attempts = ["text", "title"];
+					for (var i = 0; i < attempts.length; i++) {
+						var attempt = attempts[i];
+						if ($scope.row.hasOwnProperty(prefix + "/_" + attempt)) {
+							supplementary = attempt;
+							break;
+						}
+					}
+					if (supplementary === true) {
+						supplementary = false;
+					}
+				}
+				return $scope.row[prefix + (supplementary ? '/_' + supplementary : '')];
 			}
 
 		}
