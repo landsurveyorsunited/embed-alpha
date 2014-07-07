@@ -41,6 +41,28 @@
 			</ul>
 		</div>
 	</div>
+	<div class="well clearfix" ng-if="guide == 'inputs'">
+		<div ng-if="!customInputs" class="center">
+			<h3 class="center">Is your data from the right <span class="pink">source</span>?</h3>
+			<button class="btn btn-success" ng-click="changeGuide('amount')"><i class="fa fa-check"></i> Looks good!</button>
+			<button class="btn btn-default" ng-click="setCustomInputs(true)">Needs a change</button>
+		</div>
+		<div ng-if="customInputs">
+			<h3 class="center">What <span class="pink">inputs</span> do you want to use?</h3>
+			<form class="form-horizontal" ng-submit="reloadData()">
+				<div class="form-group" ng-repeat="(input_name, input_value) in queryInput">
+					<label class="control-label col-sm-2">{{input_name}}</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" ng-model="queryInput[input_name]" ng-change="setCustomTested(false)">
+					</div>
+				</div>
+			</form>
+			<div class="center">
+				<button class="btn btn-default btn-lg" ng-click="reloadData()" ng-show="!customTested">Test input</button>
+				<button class="btn btn-success btn-lg" ng-click="changeGuide('amount')" ng-show="customTested"><i class="fa fa-check"></i> Looks good!</button>
+			</div>
+		</div>
+	</div>
 	<div class="well clearfix" ng-if="guide == 'amount'">
 		<h3 class="center"><span class="pink">How much</span> data would you like displayed?</h3>
 		<form class="form-inline center">

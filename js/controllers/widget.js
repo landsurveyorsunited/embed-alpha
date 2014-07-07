@@ -13,12 +13,14 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.inputs = false;
 	$scope.outputs = false;
 	$scope.queryInput = false;
+	$scope.customInputs = false;
+	$scope.customTested = false;
 
 	$scope.rows = {
 		"dates": "Do MMM YYYY, hh:mma"
 	}
 
-	// data, amount, title, height, style, embed
+	// data, inputs, amount, title, height, style, embed
 	$scope.guide = "data";
 
 	$scope.changeGuide = function(newGuide) {
@@ -41,6 +43,17 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.setDataAmount = function(amount) {
 		$scope.amount = amount;
 		getData();
+	}
+
+	$scope.setCustomTested = function(val) {
+		$scope.customTested = val;
+	}
+
+	$scope.setCustomInputs = function(val) {
+		if (val) {
+			$scope.customTested = false;
+		}
+		$scope.customInputs = val;
 	}
 
 	$scope.getPageCount = function() {
@@ -89,7 +102,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		var keys = Object.keys($scope.mappings);
 		if ($scope.currentMapping >= keys.length) {
 			$scope.currentMapping = 0;
-			$scope.guide = "amount";
+			$scope.guide = "inputs";
 			return;
 		}
 		var newKey = keys[$scope.currentMapping];
@@ -100,6 +113,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		}
 	}
 	$scope.ee = data.get("ee");
+
+	$scope.reloadData = function() {
+		getData(false, true);
+	}
 
 	$scope.mappings = {
 		"heading": {
@@ -195,11 +212,12 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		});
 	}
 
-	var getData = function(init) {
+	var getData = function(init, ignoreSchema) {
 		if ($scope.loading) {
 			return;
 		}
 		$scope.loading = true;
+		$scope.customTested = true;
 
 		var versionLoaded = false;
 		var dataLoaded = false;
@@ -216,7 +234,9 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 		ioapi.bucket("connectorversion").object($scope.version_guid).children("tests").get()
 		.done(function(tests) {
-			$scope.queryInput = tests.testQueries[0].input;
+			if (!ignoreSchema) {
+				$scope.queryInput = tests.testQueries[0].input;
+			}
 			ioquery.query({
 				"connectorGuids": [$scope.source_guid],
 				"input": $scope.queryInput,
