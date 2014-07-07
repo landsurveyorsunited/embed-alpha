@@ -9,7 +9,7 @@ angular.module("Embed").factory("data", function($rootScope) {
 				"image": "owen"
 			},
 			{
-				"name": "Needy Owl",
+				"name": "Beaked Owl",
 				"id": "needy",
 				"image_position": "left",
 				"image": "needy"
@@ -31,6 +31,13 @@ angular.module("Embed").factory("data", function($rootScope) {
 				"id": "tall",
 				"image_position": "right",
 				"image": "tall"
+			},
+			{
+				"name": "Developer Owl",
+				"id": "owl",
+				"image_position": "left",
+				"image": "owl",
+				"ee": true
 			}
 		]
 	};

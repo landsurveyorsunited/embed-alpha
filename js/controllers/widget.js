@@ -2,8 +2,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 	$scope.source_guid = $routeParams.source_guid;
 	$scope.version_guid = data.get("source").latestVersionGuid;
+	$scope.type = data.get("source").type;
 	$scope.title = data.get("source").name;
 
+	$scope.availableData = [];
 	$scope.data = [];
 
 	$scope.loading = false;
@@ -13,11 +15,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.queryInput = false;
 
 	$scope.rows = {
-		"editable": true,
 		"dates": "Do MMM YYYY, hh:mma"
 	}
 
-	// data, style, embed
+	// data, amount, title, height, style, embed
 	$scope.guide = "data";
 
 	$scope.changeGuide = function(newGuide) {
@@ -35,7 +36,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	}
 
 	// 1row, 3rows, 5rows, 10rows, 1page, 3pages, 5pages, all
-	$scope.amount = "1page";
+	$scope.amount = "all";
 
 	$scope.setDataAmount = function(amount) {
 		$scope.amount = amount;
@@ -73,6 +74,33 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 	$scope.moment = moment;
 
+	$scope.currentMapping = -1;
+
+	$scope.getCurrentMappingKey = function() {
+		return Object.keys($scope.mappings)[$scope.currentMapping];
+	}
+
+	$scope.getCurrentMapping = function() {
+		return $scope.mappings[$scope.getCurrentMappingKey()];
+	}
+
+	$scope.getNextMapping = function() {
+		$scope.currentMapping++;
+		var keys = Object.keys($scope.mappings);
+		if ($scope.currentMapping >= keys.length) {
+			$scope.currentMapping = 0;
+			$scope.guide = "amount";
+			return;
+		}
+		var newKey = keys[$scope.currentMapping];
+		var newMapping = $scope.mappings[newKey];
+		if (newMapping.list.length < 1) {
+			$scope.getNextMapping();
+			return;
+		}
+	}
+	$scope.ee = data.get("ee");
+
 	$scope.mappings = {
 		"heading": {
 			"list": [],
@@ -96,7 +124,20 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		}
 	}
 
+	$scope.firstSuggestion = function(field) {
+		if (!field) {
+			field = $scope.getCurrentMappingKey();
+		}
+		if (!$scope.mappings.hasOwnProperty(field)) {
+			return;
+		}
+		$scope.mappings[field].current = 0;
+	}
+
 	$scope.changeSuggestion = function(field) {
+		if (!field) {
+			field = $scope.getCurrentMappingKey();
+		}
 		if (!$scope.mappings.hasOwnProperty(field) || $scope.mappings[field].current < 0) {
 			return;
 		}
@@ -107,6 +148,9 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	}
 
 	$scope.removeSuggestion = function(field) {
+		if (!field) {
+			field = $scope.getCurrentMappingKey();
+		}
 		if (!$scope.mappings.hasOwnProperty(field) || $scope.mappings[field].current < 0) {
 			return;
 		}
@@ -115,28 +159,24 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 	$scope.acquireSuggestions = function() {
 		$scope.outputs.map(function(output) {
+			var fields = [];
 			switch(output.type) {
 				case "STRING":
-					$scope.mappings.description.list.push(output.name);
-					$scope.mappings.description.current = 0;
 				case "CURRENCY":
 				case "LANG":
 				case "COUNTRY":
 				case "BOOLEAN":
-					$scope.mappings.heading.list.push(output.name);
-					$scope.mappings.heading.current = 0;
+					fields.push("heading");
+					fields.push("description");
 					break;
 				case "DATE":
-					$scope.mappings.date.list.push(output.name);
-					$scope.mappings.date.current = 0;
+					fields.push("date");
 					break;
 				case "URL":
-					$scope.mappings.link.list.push(output.name);
-					$scope.mappings.link.current = 0;
+					fields.push("link");
 					break;
 				case "IMAGE":
-					$scope.mappings.image.list.push(output.name);
-					$scope.mappings.image.current = 0;
+					fields.push("image");
 					break;
 				case "INT":
 				case "FLOAT":
@@ -144,10 +184,16 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 				case "HTML":
 					break;
 			}
+			fields.map(function(field) {
+				$scope.mappings[field].list.push(output.name);
+				if ($scope.mappings[field].current < 0) {
+					$scope.mappings[field].current = $scope.mappings[field].list.length - 1;
+				}
+			});
 		});
 	}
 
-	var getData = function() {
+	var getData = function(init) {
 		if ($scope.loading) {
 			return;
 		}
@@ -174,7 +220,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 				"input": $scope.queryInput,
 				"maxPages": $scope.getPageCount()
 			}).then(function(data) {
-				$scope.data = data.map(function(row) {
+				$scope.availableData = data.map(function(row) {
 					for (var k in row.data) {
 						if (Object.prototype.toString.call(row.data[k]) === '[object Array]') {
 							row.data[k] = row.data[k][0];
@@ -182,6 +228,11 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 					}
 					return row.data;
 				});
+				$scope.data = $scope.availableData;
+				$scope.row = $scope.data[0];
+				if (init) {
+					$scope.getNextMapping();
+				}
 				switch ($scope.amount) {
 					case "1row":
 						$scope.data = $scope.data.slice(0, 1);
@@ -205,7 +256,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	}
 	var init = function() {
 		if (data.get("authenticated")) {
-			getData();
+			getData(true);
 		} else {
 			$location.path("/login");
 		}
@@ -213,11 +264,11 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	init();
 
 	$scope.getEmbedCode = function() {
-		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&amp;api_key=" + encodeURIComponent(data.get("api_key")) + "&amp;source=" + $scope.source_guid + "&amp;design=" + $scope.design.id + "&amp;title=" + encodeURIComponent($scope.title) + "&amp;queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amp;amount=" + $scope.amount;
+		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount;
 		for (var k in $scope.mappings) {
 			var mapping = $scope.mappings[k];
 			if (mapping.current >= 0) {
-				url += "&amp;" + k + "=" + mapping.list[mapping.current];
+				url += "&" + k + "=" + mapping.list[mapping.current];
 			}
 		}
 		return '<iframe src="' + url + '" style="width:100%;height:' + $scope.height + 'px;border:1px solid #ccc;"></iframe>';

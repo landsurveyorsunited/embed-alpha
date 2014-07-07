@@ -69,33 +69,12 @@ div.container {
 
 /* Hoverable */
 
-.hoverable:hover .on-hover {
-  display: inline-block;
-}
-
 .datarows-container {
   border: 1px solid #ccc;
   border-radius: 2px;
   max-width: 500px;
   margin: 0 auto;
   overflow: auto;
-}
-
-.datarows .datarow .img .on-hover {
-  top: 10px;
-  left: 10px;
-}
-
-.datarows .datarow .on-hover {
-  font-size: 16px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.datarows .datarow .on-hover button {
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 0 5px;
 }
 
 ul.owls li {

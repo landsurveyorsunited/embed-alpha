@@ -1,37 +1,16 @@
 <div class="datarow clearfix" ng-class="{ 'has-img': mappings.image.current >= 0 }">
-	<div ng-if="mappings.image.current >= 0" class="pull-left img hoverable" style="background-image: url({{d('image')}})">
-		<div class="on-hover">
-			<button class="btn btn-default" ng-if="mappings.image.list.length > 1" ng-click="changeSuggestion('image')"><i class="fa fa-exchange"></i></button>
-			<button class="btn btn-default" ng-click="removeSuggestion('image')"><i class="fa fa-trash-o"></i></button>
-		</div>
-	</div>
-	<h1 ng-if="mappings.heading.current >= 0" class="hoverable">
-		<div class="on-hover">
-			<button class="btn btn-default" ng-if="mappings.heading.list.length > 1" ng-click="changeSuggestion('heading')"><i class="fa fa-exchange"></i></button>
-			<button class="btn btn-default" ng-click="removeSuggestion('heading')"><i class="fa fa-trash-o"></i></button>
-		</div>
+	<div ng-if="mappings.image.current >= 0" class="pull-left img" style="background-image: url({{d('image')}})"></div>
+	<h1 ng-if="mappings.heading.current >= 0">
 		{{d('heading')}}
 	</h1>
-	<div ng-if="mappings.date.current >= 0" class="hoverable p">
-		<div class="on-hover">
-			<button class="btn btn-default" ng-if="mappings.date.list.length > 1" ng-click="changeSuggestion('date')"><i class="fa fa-exchange"></i></button>
-			<button class="btn btn-default" ng-click="removeSuggestion('date')"><i class="fa fa-trash-o"></i></button>
-		</div>
+	<div ng-if="mappings.date.current >= 0" class="p">
 		<em>{{moment(d('date')).format(rows.dates)}}</em>
 	</div>
-	<div ng-if="mappings.description.current >= 0" class="hoverable p">
-		<div class="on-hover">
-			<button class="btn btn-default" ng-if="mappings.description.list.length > 1" ng-click="changeSuggestion('description')"><i class="fa fa-exchange"></i></button>
-			<button class="btn btn-default" ng-click="removeSuggestion('description')"><i class="fa fa-trash-o"></i></button>
-		</div>
+	<div ng-if="mappings.description.current >= 0" class="p">
 		{{d('description')}}
 	</div>
-	<div ng-if="mappings.link.current >= 0" class="hoverable p link">
-		<div class="on-hover">
-			<button class="btn btn-default" ng-if="mappings.link.list.length > 1" ng-click="changeSuggestion('link')"><i class="fa fa-exchange"></i></button>
-			<button class="btn btn-default" ng-click="removeSuggestion('link')"><i class="fa fa-trash-o"></i></button>
-		</div>
-		<a href="{{d('link')}}" target="_blank">
+	<div ng-if="mappings.link.current >= 0" class="p link">
+		<a href="{{d('link')}}" target="_blank" style="position: relative">
 			{{d('link', 'text') || 'More'}} <i class="fa fa-chevron-right"></i>
 		</a>
 	</div>

@@ -9,7 +9,7 @@
 		<form ng-submit="executeSearch(searchterm)" class="form-inline">
 			<div class="form-group">
 				<input type="text" class="form-control" ng-model="searchterm" placeholder="Search sources">
-				<button type="submit" class="btn btn-success" ng-disabled="!searchterm.length"><i class="fa fa-search"></i> Search</button>
+				<button type="submit" class="btn btn-warning" ng-disabled="!searchterm.length"><i class="fa fa-search"></i> Search</button>
 				<button class="btn btn-danger" ng-if="searchterm.length" ng-click="executeSearch('')"><i class="fa fa-trash-o"></i></button>
 			</div>
 		</form>

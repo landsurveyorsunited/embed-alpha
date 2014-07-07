@@ -20,7 +20,6 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 	$scope.loading = false;
 
 	$scope.rows = {
-		"editable": false,
 		"dates": "Do MMM YYYY, hh:mma"
 	}
 

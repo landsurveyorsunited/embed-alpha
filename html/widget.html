@@ -2,72 +2,100 @@
 	<div class="clearfix">
 		<img src="/img/owls/owen.png" class="pull-left" style="height: 120px; margin-left: -20px; margin-right: 20px;">
 		<h1>Party time!</h1>
-		<p>We've got all the details we need, let's build your widget!</p>
-		<p>Below is a <span class="pink">preview</span> of how your widget will look.</p>
+		<p>Now that we know about <span class="pink">you</span> and your <span class="pink">source</span>, we need to know what you want your widget to <span class="pink">look like</span>.</p>
+		<p>We have a couple <span class="pink">quick questions</span>, then you're done!</p>
 	</div>
 	<div class="well clearfix" ng-if="guide == 'data'">
-		<h3 class="pink">Edit the data</h3>
-		<p><span class="pink">Hover</span> over each of the pieces of data</p>
-		<p><a class="btn btn-default"><i class="fa fa-exchange"></i></a> Click this button by the data to <span class="pink">switch</span> which piece of data is displayed</p>
-		<p><a class="btn btn-default"><i class="fa fa-trash-o"></i></a> Click this button by the data to <span class="pink">stop it</span> being displayed</p>
-		<p><button class="btn btn-warning btn-sm" ng-click="acquireSuggestions()"><i class="fa fa-refresh"></i> Reset suggestions</button> if you make an error</p>
-		<p>Choose how much data to display:</p>
-		<div style="margin-bottom: 20px;">
-			<form ng-submit="setDataAmount(amount)" class="form-inline">
-				<div class="form-group">
-					<select class="form-control" ng-model="amount">
-						<option value="1row">First item</option>
-						<option value="3rows">First 3 items</option>
-						<option value="5rows">First 5 items</option>
-						<option value="10rows">First 10 items</option>
-						<option value="1page">First complete page</option>
-						<option value="3pages">First 3 pages</option>
-						<option value="5pages">First 5 pages</option>
-						<option value="all">All you an eat!</option>
-					</select>
-					<button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Set data amount</button>
-				</div>
-			</form>
+		<div class="center loading" ng-if="loading">
+			<i class="fa fa-spin fa-spinner"></i>
+			<p>Loading...</p>
 		</div>
-		<p class="pull-right"><button class="btn btn-primary btn-lg" ng-click="changeGuide('style')">Next step <i class="fa fa-chevron-right"></i></button></p>
+		<div ng-if="!loading" class="datarows">
+			<p>Here is an example from your data source:</p>
+			<datarow></datarow>
+		</div>
+		<div class="center" ng-if="!loading && guide == 'data'">
+			<h1 ng-show="getCurrentMapping().current >= 0">Is the <span class="pink">{{getCurrentMappingKey()}}</span> correct?</h1>
+			<div ng-show="getCurrentMapping().list.length > 1 && getCurrentMapping().current >= 0">
+				<button class="btn btn-success" ng-click="getNextMapping()"><i class="fa fa-check"></i> Looks good!</button>
+				<button class="btn btn-default" ng-click="changeSuggestion()"><i class="fa fa-exchange"></i> Try another</button>
+				<button class="btn btn-danger" ng-click="removeSuggestion()"><i class="fa fa-trash-o"></i> Hide {{getCurrentMappingKey()}}</button>
+			</div>
+			<div ng-show="getCurrentMapping().list.length <= 1 && getCurrentMapping().current >= 0">
+				<button class="btn btn-success" ng-click="getNextMapping()"><i class="fa fa-check"></i> Looks good!</button>
+				<button class="btn btn-danger" ng-click="removeSuggestion()"><i class="fa fa-trash-o"></i> Hide {{getCurrentMappingKey()}}</button>
+			</div>
+			<div ng-show="getCurrentMapping().current < 0">
+				<h3>Are you sure you want to remove the <span class="pink">{{getCurrentMappingKey()}}</span>?</h3>
+				<button class="btn btn-success" ng-click="getNextMapping()"><i class="fa fa-check"></i> Definitely, do it!</button>
+				<button class="btn btn-danger" ng-click="firstSuggestion()"><i class="fa fa-undo"></i> Gah! Undo!</button>
+			</div>
+		</div>
+	</div>
+	<div class="well clearfix" ng-if="guide == 'amount'">
+		<h3 class="center"><span class="pink">How much</span> data would you like displayed?</h3>
+		<form class="form-inline center">
+			<div class="form-group">
+				<select class="form-control" ng-model="amount" ng-change="setDataAmount(amount)">
+					<option value="1row">First item</option>
+					<option value="3rows" ng-if="data.length >= 3">First 3 items</option>
+					<option value="5rows" ng-if="data.length >= 5">First 5 items</option>
+					<option value="10rows" ng-if="data.length >= 10">First 10 items</option>
+					<option value="1page" ng-if="type == 'LIVE_WEB'">First complete page</option>
+					<option value="3pages" ng-if="type == 'LIVE_WEB'">First 3 pages</option>
+					<option value="5pages" ng-if="type == 'LIVE_WEB'">First 5 pages</option>
+					<option value="all">All you an eat!</option>
+				</select>
+			</div>
+		</form>
+		<div class="center" style="margin-top: 15px">
+			<button class="btn btn-primary" ng-click="changeGuide('title')">Next step <i class="fa fa-chevron-right"></i></button>
+		</div>
+	</div>
+	<div class="well clearfix" ng-if="guide == 'title'">
+		<h3 class="center">Customise your widget's <span class="pink">name</span></h3>
+		<form ng-submit="setTitle(title)" class="form-inline center">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="title" placeholder="Widget title" ng-change="setTitle(title)">
+			</div>
+		</form>
+		<div class="center" style="margin-top: 15px">
+			<button class="btn btn-primary" ng-click="changeGuide('height')">Next step <i class="fa fa-chevron-right"></i></button>
+		</div>
+	</div>
+	<div class="well clearfix" ng-if="guide == 'height'">
+		<h3 class="center">Tweak your widget's <span class="pink">height</span></h3>
+		<form ng-submit="setHeight(height)" class="form-inline center">
+			<div class="form-group">
+				<input type="number" class="form-control" ng-model="height" step="50" min="100" max="1000" ng-change="setHeight(height)">
+			</div>
+		</form>
+		<div class="center" style="margin-top: 15px">
+			<button class="btn btn-primary" ng-click="changeGuide('style')">Next step <i class="fa fa-chevron-right"></i></button>
+		</div>
 	</div>
 	<div class="well clearfix" ng-if="guide == 'style'">
-		<h3 class="pink">Set your style</h3>
-		<p>You can change the title for your widget:</p>
-		<div style="margin-bottom: 20px;">
-			<form ng-submit="setTitle(title)" class="form-inline">
-				<div class="form-group">
-					<input type="text" class="form-control" ng-model="title" placeholder="Widget title">
-					<button type="submit" class="btn btn-success" ng-disabled="!title.length"><i class="fa fa-check"></i> Set title</button>
-				</div>
-			</form>
-		</div>
-		<p>Choose how high your widget will be:</p>
-		<div style="margin-bottom: 20px;">
-			<form ng-submit="setHeight(height)" class="form-inline">
-				<div class="form-group">
-					<input type="number" class="form-control" ng-model="height" step="50" min="100" max="1000">
-					<button type="submit" class="btn btn-success" ng-disabled="!title.length"><i class="fa fa-check"></i> Set height</button>
-				</div>
-			</form>
-		</div>
+		<h3 class="center">Get some <span class="pink">style</span>!</h3>
 		<p>Pick one of our funky themes:</p>
 		<ul class="list-inline owls">
-			<li class="well center" ng-repeat="design in designs" ng-click="changeDesign(design.id)">
+			<li class="well center" ng-repeat="design in designs" ng-click="changeDesign(design.id)" ng-if="!design.ee || (design.ee && ee)">
 				<img ng-src="/img/owls/{{design.image}}.png">
 				<p>{{design.name}}</p>
 			</li>
 		</ul>
-		<p class="pull-right"><button class="btn btn-primary btn-lg" ng-click="changeGuide('embed')">Last step! <i class="fa fa-chevron-right"></i></button></p>
+		<div class="center" style="margin-top: 15px">
+			<button class="btn btn-primary" ng-click="changeGuide('embed')">Last step! <i class="fa fa-chevron-right"></i></button>
+		</div>
 	</div>
 	<div class="well clearfix" ng-if="guide == 'embed'">
-		<h3 class="pink">Get your code!</h3>
+		<h3 class="pink center">We're there!</h3>
+		<h4 class="center">Get your code below.</h4>
 		<p>Copy and paste this embed code to get your widget on your site:</p>
 		<div>
 			<textarea>{{getEmbedCode()}}</textarea>
 		</div>
 	</div>
-	<div style="height: {{height}}px" class="datarows-container">
+	<div style="height: {{height}}px" class="datarows-container" ng-if="guide != 'data'">
 		<datarows></datarows>
 	</div>
 </div>

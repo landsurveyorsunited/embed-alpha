@@ -70,14 +70,6 @@
 	top: 5px;
 }
 
-.hoverable {
-  position: relative;
-}
-
-.on-hover {
-	display: none;
-}
-
 /* Themes */
 
 .datarows.design-needy a {
