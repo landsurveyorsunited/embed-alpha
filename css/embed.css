@@ -77,6 +77,52 @@ div.container {
   overflow: auto;
 }
 
+.datarows .heading,
+.datarows .date,
+.datarows .description,
+.datarows .link,
+.datarows.highlight-heading .heading,
+.datarows.highlight-date .date,
+.datarows.highlight-description .description,
+.datarows.highlight-link .link {
+  border: 2px solid transparent;
+  border-radius: 2px;
+  padding: 0;
+  position: relative;
+  margin-bottom: 10px;
+  top: 0;
+  left: 0;
+  transition: border-color 1s cubic-bezier(0,1,0,1),
+              background-color 1s cubic-bezier(0,1,0,1),
+              top 2s cubic-bezier(0,1,0,1),
+              left 2s cubic-bezier(0,1,0,1),
+              margin-bottom 2s cubic-bezier(0,1,0,1),
+              padding 2s cubic-bezier(0,1,0,1);
+}
+
+.datarows .link,
+.datarows.highlight-link .link {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.datarows.highlight-heading .heading,
+.datarows.highlight-date .date,
+.datarows.highlight-description .description,
+.datarows.highlight-link .link {
+  background-color: #fcb236;
+  border-color: #7C581B;
+  padding: 5px;
+  top: -5px;
+  left: -5px;
+  margin-bottom: 0;
+}
+
+.datarows.highlight-link .link {
+  left: auto !important!;
+  right: -5px !important;
+}
+
 ul.owls li {
   margin-right: 20px;
   background-color: #fff;

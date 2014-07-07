@@ -1,12 +1,12 @@
 <div class="datarow clearfix" ng-class="{ 'has-img': mappings.image.current >= 0 }">
 	<div ng-if="mappings.image.current >= 0" class="pull-left img" style="background-image: url({{d('image')}})"></div>
-	<h1 ng-if="mappings.heading.current >= 0">
+	<h1 ng-if="mappings.heading.current >= 0" class="heading">
 		{{d('heading')}}
 	</h1>
-	<div ng-if="mappings.date.current >= 0" class="p">
+	<div ng-if="mappings.date.current >= 0" class="p date">
 		<em>{{moment(d('date')).format(rows.dates)}}</em>
 	</div>
-	<div ng-if="mappings.description.current >= 0" class="p">
+	<div ng-if="mappings.description.current >= 0" class="p description">
 		{{d('description')}}
 	</div>
 	<div ng-if="mappings.link.current >= 0" class="p link">
