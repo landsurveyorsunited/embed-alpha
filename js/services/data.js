@@ -33,6 +33,12 @@ angular.module("Embed").factory("data", function($rootScope) {
 				"image": "tall"
 			},
 			{
+				"name": "Shy Owl",
+				"id": "shy",
+				"image_position": "left",
+				"image": "shy"
+			},
+			{
 				"name": "Developer Owl",
 				"id": "owl",
 				"image_position": "left",

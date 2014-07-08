@@ -44,7 +44,7 @@
 	<div class="well clearfix" ng-if="guide == 'inputs'">
 		<div ng-if="!customInputs" class="center">
 			<h3 class="center">Is your data from the right <span class="pink">source</span>?</h3>
-			<button class="btn btn-success" ng-click="changeGuide('amount')"><i class="fa fa-check"></i> Looks good!</button>
+			<button class="btn btn-success" ng-click="changeGuide('choice')"><i class="fa fa-check"></i> Looks good!</button>
 			<button class="btn btn-default" ng-click="setCustomInputs(true)">Needs a change</button>
 		</div>
 		<div ng-if="customInputs">
@@ -59,7 +59,22 @@
 			</form>
 			<div class="center">
 				<button class="btn btn-default btn-lg" ng-click="reloadData()" ng-show="!customTested">Test input</button>
-				<button class="btn btn-success btn-lg" ng-click="changeGuide('amount')" ng-show="customTested"><i class="fa fa-check"></i> Looks good!</button>
+				<button class="btn btn-success btn-lg" ng-click="changeGuide('choice')" ng-show="customTested"><i class="fa fa-check"></i> Looks good!</button>
+			</div>
+		</div>
+	</div>
+	<div class="well clearfix" ng-if="guide == 'choice'">
+		<div ng-if="type == 'LIVE_WEB'">
+			<h3 class="center">Give your users a <span class="pink">search box</span>?</h3>
+			<div class="center">
+				<button class="btn btn-success" ng-click="giveInputChoice('search')"><i class="fa fa-check"></i> Yes! Amazing!</button>
+				<button class="btn btn-default" ng-click="giveInputChoice('none')">Not this time</button>
+			</div>
+		</div>
+		<div ng-if="type == 'EXTRACTOR'">
+			<h3 class="center">(This space left intentionally blank)</h3>
+			<div class="center">
+				<button class="btn btn-success" ng-click="giveInputChoice('none')"><i class="fa fa-check"></i> I'm cool with that</button>
 			</div>
 		</div>
 	</div>

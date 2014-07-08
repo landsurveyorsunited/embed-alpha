@@ -9,19 +9,29 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.data = [];
 
 	$scope.loading = false;
+	$scope.initiallyLoaded = false;
 
 	$scope.inputs = false;
 	$scope.outputs = false;
 	$scope.queryInput = false;
 	$scope.customInputs = false;
 	$scope.customTested = false;
+	// search, dropdown, none
+	$scope.userInput = $scope.type == "LIVE_WEB" ? "search" : "dropdown";
 
 	$scope.rows = {
 		"dates": "Do MMM YYYY, hh:mma"
 	}
 
-	// data, inputs, amount, title, height, style, embed
+	// data, inputs, choice, amount, title, height, style, embed
 	$scope.guide = "data";
+
+	$scope.getInputCount = function() {
+		if (!$scope.queryInput) {
+			return 0;
+		}
+		return Object.keys($scope.queryInput).length;
+	}
 
 	$scope.changeGuide = function(newGuide) {
 		$scope.guide = newGuide;
@@ -54,6 +64,11 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 			$scope.customTested = false;
 		}
 		$scope.customInputs = val;
+	}
+
+	$scope.giveInputChoice = function(val) {
+		$scope.userInput = val;
+		$scope.guide = "amount";
 	}
 
 	$scope.getPageCount = function() {
@@ -227,6 +242,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 			$scope.inputs = data.inputProperties;
 			$scope.outputs = data.outputProperties;
 			$scope.loading = !dataLoaded;
+			$scope.initiallyLoaded = dataLoaded;
 			if (!ignoreSuggestions) {
 				$scope.acquireSuggestions();
 			}
@@ -272,6 +288,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 						break;
 				}
 				$scope.loading = !versionLoaded;
+				$scope.initiallyLoaded = versionLoaded;
 				dataLoaded = true;
 				safeApply($scope);
 			});
@@ -288,7 +305,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	init();
 
 	$scope.getEmbedCode = function() {
-		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount;
+		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount + "&userInput=" + $scope.userInput;
 		for (var k in $scope.mappings) {
 			var mapping = $scope.mappings[k];
 			if (mapping.current >= 0) {

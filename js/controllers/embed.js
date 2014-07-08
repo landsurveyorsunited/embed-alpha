@@ -8,12 +8,14 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 	$scope.title = requestData.title;
 	$scope.amount = requestData.amount;
 	$scope.design = false;
+	$scope.userInput = requestData.userInput;
 	data.get("designs").map(function(row) {
 		if (row.id == requestData.design) {
 			$scope.design = row;
 		}
 	});
 	$scope.queryInput = JSON.parse(requestData.queryInput);
+	$scope.initiallyLoaded = false;
 
 	$scope.data = [];
 
@@ -65,6 +67,13 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 		}
 	}
 
+	$scope.getInputCount = function() {
+		if (!$scope.queryInput) {
+			return 0;
+		}
+		return Object.keys($scope.queryInput).length;
+	}
+
 	var getData = function() {
 		$scope.loading = true;
 		importio.init({
@@ -101,9 +110,13 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 					break;
 			}
 			$scope.loading = false;
+			$scope.initiallyLoaded = true;
 			safeApply($scope);
 		});
 	}
 	getData();
+	$scope.reloadData = function() {
+		getData();
+	}
 
 });
