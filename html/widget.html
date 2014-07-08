@@ -72,9 +72,47 @@
 			</div>
 		</div>
 		<div ng-if="type == 'EXTRACTOR'">
-			<h3 class="center">(This space left intentionally blank)</h3>
-			<div class="center">
-				<button class="btn btn-success" ng-click="giveInputChoice('none')"><i class="fa fa-check"></i> I'm cool with that</button>
+			<h3 class="center">Give your users a <span class="pink">choice of URLs</span><span ng-hide="userInput == 'dropdown'">?</span></h3>
+			<div class="center" ng-if="userInput != 'dropdown'">
+				<button class="btn btn-success" ng-click="giveInputChoice('dropdown', true)"><i class="fa fa-check"></i> Yes! Amazing!</button>
+				<button class="btn btn-default" ng-click="giveInputChoice('none')">Not this time</button>
+			</div>
+			<div ng-if="userInput == 'dropdown'">
+				<form class="form-horizontal" ng-submit="changeGuide('amount')">
+					<div class="form-group">
+						<div class="col-sm-5">
+							<p class="form-control-static">Label</p>
+						</div>
+						<div class="col-sm-7">
+							<p class="form-control-static">URL</p>
+						</div>
+					</div>
+					<div class="form-group" ng-repeat="url in customUrls">
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="url.label">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" ng-model="url.url">
+						</div>
+						<div class="col-sm-1">
+							<button class="btn btn-danger" ng-click="removeCustomUrl($index)" ng-if="!$first"><i class="fa fa-trash-o"></i></button>
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal" ng-submit="addUrlToDropdown(url); url = ''">
+					<div class="form-group">
+						<div class="col-sm-3">Add another URL:</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" ng-model="url" placeholder="Enter a URL">
+						</div>
+						<div class="col-sm-2">
+							<button type="submit" class="btn btn-default"><i class="fa fa-plus-circle"></i></button>
+						</div>
+					</div>
+				</form>
+				<div class="center">
+					<button class="btn btn-success" ng-click="giveInputChoice('dropdown')"><i class="fa fa-check"></i> I'm all done</button>
+				</div>
 			</div>
 		</div>
 	</div>

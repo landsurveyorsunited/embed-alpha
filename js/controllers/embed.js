@@ -15,7 +15,9 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 		}
 	});
 	$scope.queryInput = JSON.parse(requestData.queryInput);
+	$scope.customUrls = JSON.parse(requestData.customUrls);
 	$scope.initiallyLoaded = false;
+	$scope.inputUrl = $scope.userInput == "dropdown" ? $scope.queryInput["webpage/url"] : false;
 
 	$scope.data = [];
 
@@ -74,7 +76,7 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 		return Object.keys($scope.queryInput).length;
 	}
 
-	var getData = function() {
+	var getData = function(overwriteUrl) {
 		$scope.loading = true;
 		importio.init({
 			"auth": {
@@ -82,9 +84,12 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 				"apiKey": $scope.api_key
 			}
 		});
+		if (overwriteUrl) {
+			$scope.inputUrl = overwriteUrl;
+		}
 		ioquery.query({
 			"connectorGuids": [$scope.source_guid],
-			"input": $scope.queryInput,
+			"input": $scope.inputUrl ? { "webpage/url": $scope.inputUrl } : $scope.queryInput,
 			"maxPages": $scope.getPageCount()
 		}).then(function(data) {
 			$scope.data = data.map(function(row) {
@@ -115,8 +120,8 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 		});
 	}
 	getData();
-	$scope.reloadData = function() {
-		getData();
+	$scope.reloadData = function(overwriteUrl) {
+		getData(overwriteUrl);
 	}
 
 });

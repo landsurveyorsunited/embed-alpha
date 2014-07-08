@@ -17,7 +17,9 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.customInputs = false;
 	$scope.customTested = false;
 	// search, dropdown, none
-	$scope.userInput = $scope.type == "LIVE_WEB" ? "search" : "dropdown";
+	$scope.userInput = $scope.type == "LIVE_WEB" ? "search" : "none";
+	$scope.customUrls = [];
+	$scope.inputUrl = false;
 
 	$scope.rows = {
 		"dates": "Do MMM YYYY, hh:mma"
@@ -47,6 +49,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		$scope.height = height;
 	}
 
+	$scope.removeCustomUrl = function(idx) {
+		$scope.customUrls.splice(idx, 1);
+	}
+
 	// 1row, 3rows, 5rows, 10rows, 1page, 3pages, 5pages, all
 	$scope.amount = "all";
 
@@ -66,9 +72,11 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		$scope.customInputs = val;
 	}
 
-	$scope.giveInputChoice = function(val) {
+	$scope.giveInputChoice = function(val, dontProceed) {
 		$scope.userInput = val;
-		$scope.guide = "amount";
+		if (!dontProceed) {
+			$scope.guide = "amount";
+		}
 	}
 
 	$scope.getPageCount = function() {
@@ -129,7 +137,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	}
 	$scope.ee = data.get("ee");
 
-	$scope.reloadData = function() {
+	$scope.reloadData = function(overwriteUrl) {
+		if (overwriteUrl) {
+			$scope.inputUrl = overwriteUrl;
+		}
 		getData(false, true, true);
 	}
 
@@ -227,6 +238,35 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		});
 	}
 
+	$scope.addUrlToDropdown = function(url) {
+		var defaultLabel = "No label"
+		var obj = {
+			"url": url,
+			"label": "Suggesting...",
+			"originalLabel": "Suggesting..."
+		}
+		$scope.customUrls.push(obj);
+		ioquery.query({
+			"connectorGuids": ["7f8a9f9f-f7f4-4ea2-8af7-477c28af3e62"],
+			"input": {
+				"webpage/url": url
+			}
+		}).then(function(data) {
+			var title = data[0].data.title || data[0].data.og_title || data[0].data.schema_name || defaultLabel;
+			if (obj.label == obj.originalLabel) {
+				obj.label = title;
+				obj.originalLabel = title;
+				safeApply($scope);
+			}
+		}, function() {
+			if (obj.label == obj.originalLabel) {
+				obj.label = defaultLabel;
+				obj.originalLabel = defaultLabel;
+				safeApply($scope);
+			}
+		});
+	}
+
 	var getData = function(init, ignoreSchema, ignoreSuggestions) {
 		if ($scope.loading) {
 			return;
@@ -234,6 +274,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		$scope.loading = true;
 		$scope.customTested = true;
 
+		var wasInitiallyLoaded = $scope.initiallyLoaded;
 		var versionLoaded = false;
 		var dataLoaded = false;
 
@@ -242,7 +283,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 			$scope.inputs = data.inputProperties;
 			$scope.outputs = data.outputProperties;
 			$scope.loading = !dataLoaded;
-			$scope.initiallyLoaded = dataLoaded;
+			$scope.initiallyLoaded = wasInitiallyLoaded || dataLoaded;
 			if (!ignoreSuggestions) {
 				$scope.acquireSuggestions();
 			}
@@ -254,10 +295,16 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		.done(function(tests) {
 			if (!ignoreSchema) {
 				$scope.queryInput = tests.testQueries[0].input;
+				if ($scope.queryInput.hasOwnProperty("webpage/url")) {
+					$scope.addUrlToDropdown($scope.queryInput["webpage/url"]);
+					if (!$scope.inputUrl) {
+						$scope.inputUrl = $scope.queryInput["webpage/url"];
+					}
+				}
 			}
 			ioquery.query({
 				"connectorGuids": [$scope.source_guid],
-				"input": $scope.queryInput,
+				"input": $scope.inputUrl ? { "webpage/url": $scope.inputUrl } : $scope.queryInput,
 				"maxPages": $scope.getPageCount()
 			}).then(function(data) {
 				$scope.availableData = data.map(function(row) {
@@ -288,7 +335,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 						break;
 				}
 				$scope.loading = !versionLoaded;
-				$scope.initiallyLoaded = versionLoaded;
+				$scope.initiallyLoaded = wasInitiallyLoaded || versionLoaded;
 				dataLoaded = true;
 				safeApply($scope);
 			});
@@ -305,7 +352,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	init();
 
 	$scope.getEmbedCode = function() {
-		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount + "&userInput=" + $scope.userInput;
+		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount + "&userInput=" + $scope.userInput + "&customUrls=" + encodeURIComponent(JSON.stringify($scope.customUrls));
 		for (var k in $scope.mappings) {
 			var mapping = $scope.mappings[k];
 			if (mapping.current >= 0) {

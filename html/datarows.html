@@ -18,6 +18,11 @@
 				</div>
 			</form>
 		</div>
+		<div ng-if="userInput == 'dropdown'">
+			<form class="form-horizontal" style="margin-bottom: 10px;">
+				<select class="form-control" ng-options="item.url as item.label for item in customUrls" ng-model="inputUrl" ng-change="reloadData(inputUrl)"></select>
+			</form>
+		</div>
 		<datarow ng-repeat="row in data"></datarow>
 	</div>
 	<div class="center loading" ng-if="loading">
