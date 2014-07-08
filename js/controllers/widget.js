@@ -42,7 +42,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 	$scope.setDataAmount = function(amount) {
 		$scope.amount = amount;
-		getData();
+		getData(false, true, true);
 	}
 
 	$scope.setCustomTested = function(val) {
@@ -115,7 +115,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.ee = data.get("ee");
 
 	$scope.reloadData = function() {
-		getData(false, true);
+		getData(false, true, true);
 	}
 
 	$scope.mappings = {
@@ -212,7 +212,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		});
 	}
 
-	var getData = function(init, ignoreSchema) {
+	var getData = function(init, ignoreSchema, ignoreSuggestions) {
 		if ($scope.loading) {
 			return;
 		}
@@ -227,7 +227,9 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 			$scope.inputs = data.inputProperties;
 			$scope.outputs = data.outputProperties;
 			$scope.loading = !dataLoaded;
-			$scope.acquireSuggestions();
+			if (!ignoreSuggestions) {
+				$scope.acquireSuggestions();
+			}
 			versionLoaded = true;
 			safeApply($scope);
 		});
