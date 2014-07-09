@@ -359,7 +359,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 				url += "&" + k + "=" + mapping.list[mapping.current];
 			}
 		}
-		return '<iframe src="' + url + '" style="width:100%;height:' + $scope.height + 'px;border:1px solid #ccc;"></iframe>';
+		return '<iframe src="' + url + '" style="width:100%;height:' + $scope.height + 'px;border:1px solid #ccc;"></iframe><div style="font-size: 12px">powered by <a href="https://import.io" target="_blank" style="color: #e92076; text-decoration: none">structured APIs</a> from import.io</div>';
 	}
 
 	$scope.d = function(field, supplementary, i) {
