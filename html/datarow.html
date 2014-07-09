@@ -10,7 +10,7 @@
 		{{d('description', true)}}
 	</div>
 	<div ng-if="mappings.link.current >= 0" class="p link">
-		<a href="{{d('link')}}" target="_blank" style="position: relative">
+		<a href="{{d('link')}}" target="_blank" style="position: relative" ng-style="getCustomStyle()">
 			{{d('link', 'text') || 'More'}} <i class="fa fa-chevron-right"></i>
 		</a>
 	</div>

@@ -39,6 +39,13 @@ angular.module("Embed").factory("data", function($rootScope) {
 				"image": "shy"
 			},
 			{
+				"name": "Custom Owl",
+				"id": "custom",
+				"image_position": "left",
+				"image": "custom",
+				"list_image": "template"
+			},
+			{
 				"name": "Developer Owl",
 				"id": "owl",
 				"image_position": "left",

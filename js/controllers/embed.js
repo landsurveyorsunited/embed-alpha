@@ -7,8 +7,8 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 	$scope.api_key = requestData.api_key;
 	$scope.title = requestData.title;
 	$scope.amount = requestData.amount;
-	$scope.design = false;
 	$scope.userInput = requestData.userInput;
+	$scope.design = false;
 	data.get("designs").map(function(row) {
 		if (row.id == requestData.design) {
 			$scope.design = row;
@@ -16,6 +16,8 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 	});
 	$scope.queryInput = JSON.parse(requestData.queryInput);
 	$scope.customUrls = JSON.parse(requestData.customUrls);
+	$scope.customColour = requestData.customColour;
+	$scope.showOwl = requestData.showOwl == "true";
 	$scope.initiallyLoaded = false;
 	$scope.inputUrl = $scope.userInput == "dropdown" ? $scope.queryInput["webpage/url"] : false;
 
@@ -25,6 +27,15 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 
 	$scope.rows = {
 		"dates": "Do MMM YYYY, hh:mma"
+	}
+
+	$scope.getCustomStyle = function(background) {
+		if ($scope.design.id == "custom") {
+			var obj = {}
+			obj[(background ? "background-" : "") + "color"] = "#" + $scope.customColour;
+			return obj;
+		}
+		return {};
 	}
 
 	$scope.moment = moment;

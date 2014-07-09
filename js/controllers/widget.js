@@ -20,6 +20,8 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	$scope.userInput = $scope.type == "LIVE_WEB" ? "search" : "none";
 	$scope.customUrls = [];
 	$scope.inputUrl = false;
+	$scope.customColour = "FF2E00";
+	$scope.showOwl = true;
 
 	$scope.rows = {
 		"dates": "Do MMM YYYY, hh:mma"
@@ -27,6 +29,23 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 
 	// data, inputs, choice, amount, title, height, style, embed
 	$scope.guide = "data";
+
+	$scope.updateCustomColour = function(colour) {
+		$scope.customColour = colour;
+	}
+
+	$scope.getCustomStyle = function(background) {
+		if ($scope.design.id == "custom") {
+			var obj = {}
+			obj[(background ? "background-" : "") + "color"] = "#" + $scope.customColour;
+			return obj;
+		}
+		return {};
+	}
+
+	$scope.changeShowOwl = function(val) {
+		$scope.showOwl = val;
+	}
 
 	$scope.getInputCount = function() {
 		if (!$scope.queryInput) {
@@ -352,7 +371,7 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 	init();
 
 	$scope.getEmbedCode = function() {
-		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount + "&userInput=" + $scope.userInput + "&customUrls=" + encodeURIComponent(JSON.stringify($scope.customUrls));
+		var url = "http://alpha.embed.import.io/embed/?user_guid=" + data.get("user_guid") + "&api_key=" + encodeURIComponent(data.get("api_key")) + "&source=" + $scope.source_guid + "&design=" + $scope.design.id + "&title=" + encodeURIComponent($scope.title) + "&queryInput=" + encodeURIComponent(JSON.stringify($scope.queryInput)) + "&amount=" + $scope.amount + "&userInput=" + $scope.userInput + "&showOwl=" + $scope.showOwl + "&customColour=" + $scope.customColour + "&customUrls=" + encodeURIComponent(JSON.stringify($scope.customUrls));
 		for (var k in $scope.mappings) {
 			var mapping = $scope.mappings[k];
 			if (mapping.current >= 0) {

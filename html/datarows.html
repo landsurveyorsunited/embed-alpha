@@ -1,8 +1,10 @@
 <div class="datarows design-{{design.id}}">
 	<div class="clearfix" ng-if="initiallyLoaded">
-		<img ng-src="/img/owls/{{design.image}}.png" class="pull-{{design.image_position}} heading">
+		<div ng-if="showOwl" ng-style="getCustomStyle(true)" class="pull-{{design.image_position}} heading-img">
+			<img ng-src="/img/owls/{{design.image}}.png">
+		</div>
 		<h2 style="margin-top: 0">{{title}}</h2>
-		<p>powered with realtime data from <a href="https://import.io" target="_blank">import.io</a></p>
+		<p>powered with realtime data from <a href="https://import.io" target="_blank" ng-style="getCustomStyle()">import.io</a></p>
 	</div>
 	<div ng-if="!loading">
 		<div ng-if="userInput == 'search'">

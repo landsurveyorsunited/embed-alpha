@@ -6,16 +6,20 @@
 	padding: 20px 20px 5px;
 }
 
-.datarows img.heading {
-	height: 80px;
+.datarows .heading-img {
 	margin-bottom: 20px;
 }
 
-.datarows img.heading.pull-left {
+.datarows .heading-img,
+.datarows .heading-img > img {
+	height: 80px;
+}
+
+.datarows .heading-img.pull-left {
 	margin-right: 20px;
 }
 
-.datarows img.heading.pull-right {
+.datarows .heading-img.pull-right {
 	margin-left: 20px;
 }
 
