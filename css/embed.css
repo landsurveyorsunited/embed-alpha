@@ -81,10 +81,12 @@ div.container {
 .datarows .date,
 .datarows .description,
 .datarows .link,
+.datarows .price,
 .datarows.highlight-heading .heading,
 .datarows.highlight-date .date,
 .datarows.highlight-description .description,
-.datarows.highlight-link .link {
+.datarows.highlight-link .link,
+.datarows.highlight-price .price {
   border: 2px solid transparent;
   border-radius: 2px;
   padding: 0;
@@ -104,12 +106,14 @@ div.container {
 .datarows.highlight-link .link {
   left: auto !important;
   right: 0 !important;
+  margin-left: 0 !important;
 }
 
 .datarows.highlight-heading .heading,
 .datarows.highlight-date .date,
 .datarows.highlight-description .description,
-.datarows.highlight-link .link {
+.datarows.highlight-link .link,
+.datarows.highlight-price .price {
   background-color: #fcb236;
   border-color: #7C581B;
   padding: 5px;

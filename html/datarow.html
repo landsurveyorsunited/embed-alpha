@@ -9,9 +9,12 @@
 	<div ng-if="mappings.description.current >= 0" class="p description">
 		{{d('description', true)}}
 	</div>
-	<div ng-if="mappings.link.current >= 0" class="p link">
+	<div ng-if="mappings.link.current >= 0" class="p link pull-right">
 		<a href="{{d('link')}}" target="_blank" style="position: relative" ng-style="getCustomStyle()">
 			{{d('link', 'text') || 'More'}} <i class="fa fa-chevron-right"></i>
 		</a>
+	</div>
+	<div ng-if="mappings.price.current >= 0" class="p price pull-left">
+		{{d('price')}} {{d('price', 'currency')}}
 	</div>
 </div>

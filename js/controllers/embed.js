@@ -77,6 +77,10 @@ angular.module("Embed").controller("EmbedController", function($scope, $location
 		"link": {
 			"list": [requestData.link],
 			"current": requestData.link ? 0 : -1
+		},
+		"price": {
+			"list": [requestData.price],
+			"current": requestData.price ? 0 : -1
 		}
 	}
 

@@ -183,6 +183,10 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		"link": {
 			"list": [],
 			"current": -1
+		},
+		"price": {
+			"list": [],
+			"current": -1
 		}
 	}
 
@@ -223,8 +227,9 @@ angular.module("Embed").controller("WidgetController", function($scope, $locatio
 		$scope.outputs.map(function(output) {
 			var fields = [];
 			switch(output.type) {
-				case "STRING":
 				case "CURRENCY":
+					fields.push("price");
+				case "STRING":
 				case "LANG":
 				case "COUNTRY":
 				case "BOOLEAN":
