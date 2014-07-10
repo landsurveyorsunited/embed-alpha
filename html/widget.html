@@ -10,7 +10,7 @@
 			<i class="fa fa-spin fa-spinner"></i>
 			<p>Loading...</p>
 		</div>
-		<div ng-if="!loading" class="datarows highlight-{{getCurrentMappingKey()}}">
+		<div ng-if="!loading" class="datarows highlight-{{getCurrentMappingKey()}}" ng-class="{ 'fonts-smaller': tooMuchText() }" ng-controller="RowWrapper">
 			<p>Here is an example from your data source:</p>
 			<datarow></datarow>
 		</div>
@@ -199,7 +199,7 @@
 			<textarea>{{getEmbedCode()}}</textarea>
 		</div>
 	</div>
-	<div style="height: {{height}}px" class="datarows-container" ng-if="guide != 'data'">
+	<div style="height: {{height}}px" class="datarows-container" ng-if="guide != 'data'" ng-controller="RowWrapper">
 		<datarows></datarows>
 	</div>
 </div>

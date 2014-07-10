@@ -1,4 +1,4 @@
-<div class="datarows design-{{design.id}}">
+<div class="datarows design-{{design.id}}" ng-class="{ 'fonts-smaller': tooMuchText() }">
 	<div class="clearfix" ng-if="initiallyLoaded">
 		<div ng-if="showOwl" ng-style="getCustomStyle(true)" class="pull-{{design.image_position}} heading-img">
 			<img ng-src="/img/owls/{{design.image}}.png">
@@ -6,7 +6,7 @@
 		<h2 style="margin-top: 0">{{title}}</h2>
 		<p>powered with realtime data from <a href="https://import.io" target="_blank" ng-style="getCustomStyle()">import.io</a></p>
 	</div>
-	<div ng-if="!loading">
+	<div ng-if="!loading" ng-controller="RowWrapper" ng-class="{ 'fonts-smaller': tooMuchText() }">
 		<div ng-if="userInput == 'search'">
 			<form class="form-horizontal" ng-submit="reloadData()">
 				<div class="form-group" ng-repeat="(input_name, input_value) in queryInput" style="margin-bottom: 8px;">

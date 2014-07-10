@@ -6,6 +6,13 @@
 	padding: 20px 20px 5px;
 }
 
+.datarows.fonts-smaller .datarow h1 {
+	font-size: 24px !important;
+}
+.datarows.fonts-smaller .datarow .p.description {
+	font-size: 18px !important;
+}
+
 .datarows .heading-img {
 	margin-bottom: 20px;
 }
@@ -28,6 +35,7 @@
 	border-radius: 2px;
 	margin-bottom: 15px;
 	padding: 10px 10px 0;
+	overflow: hidden;
 }
 
 .datarows .datarow h1 {
